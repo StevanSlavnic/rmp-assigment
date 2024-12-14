@@ -1,5 +1,5 @@
 import { pwa } from './app/config/pwa'
-import { appDescription } from './app/constants/index'
+import { appDescription } from './app/constants'
 
 export default defineNuxtConfig({
   modules: [
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: false,
-      routes: ['/', '/assignment'],
+      routes: ['/', '/rickandmorty', '/pokemons'],
     },
   },
 
