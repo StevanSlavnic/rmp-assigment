@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: false,
-      routes: ['/', '/rickandmorty', '/pokemons'],
+      routes: ['/', '/rickandmorty', '/pokemon'],
     },
   },
 
@@ -77,4 +77,5 @@ export default defineNuxtConfig({
       },
     },
   },
+
 })

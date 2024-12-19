@@ -1,5 +1,20 @@
 <script setup lang="ts">
-import { routes } from '@/constants/index'
+import type { Route } from '@/types/index'
+import { menuRoutes } from '~/config/menuRoutes'
+
+const router = useRouter()
+
+const definedRoutes = menuRoutes.filter((route: Route) => {
+  return router.getRoutes().find((r: {
+    path: string
+  }) => {
+    if (r.path === route.path) {
+      return r
+    }
+
+    return null
+  })
+})
 </script>
 
 <template>
@@ -7,7 +22,7 @@ import { routes } from '@/constants/index'
     <UContainer class="flex items-center">
       <nav>
         <ul class="flex gap-2">
-          <li v-for="route in routes" :key="route.path">
+          <li v-for="route in definedRoutes" :key="route.path">
             <ApplicationHeaderLink :to="route.path" :label="route.label" />
           </li>
         </ul>

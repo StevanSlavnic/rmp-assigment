@@ -31,7 +31,6 @@
     "nuxt": "^3.14.0",
     "nuxt-api-party": "^2.0.11",
     "pinia": "^2.2.6",
-    "typescript": "^5.6.3",
     "vue-tsc": "^2.1.10"
   },
   "resolutions": {
