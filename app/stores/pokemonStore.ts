@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { dtoFields } from '~/constants'
 import type { Pokemon } from '~/types'
 
 interface Response {
@@ -26,24 +27,28 @@ export const usePokemonStore = defineStore('pokemonStore', {
       pages: 0,
       count: 0,
     },
-    page: 1,
+    page: 0,
     offset: 0,
     loading: false,
     error: null,
   }),
 
   actions: {
-    async setPokemons(data: any) {
-      const dto = responseDto(data, ['results', 'next', 'prev', 'previous', 'count', 'pages'])
-      const pokemonData = await Promise.all(dto.results.map(async (pokemonItem: Pokemon) => {
+    async setData(data: any) {
+      const dto = responseDto(data, dtoFields)
+      const pokemonData = await Promise.all(dto?.results?.map(async (pokemonItem: Pokemon) => {
+        this.loading = true
         const pokemon: Pokemon = await $fetch(pokemonItem.url)
 
         return {
           id: pokemon.id,
           name: pokemon.name,
           image: pokemon.sprites?.front_default,
+          uri: `/pokemon/${pokemon.name}`,
         }
-      }))
+      })).finally(() => {
+        this.loading = false
+      })
 
       this.data = {
         ...data,
@@ -51,7 +56,7 @@ export const usePokemonStore = defineStore('pokemonStore', {
         results: [...this.data.results, ...pokemonData],
       }
 
-      this.$state.page = (this.data.results.length / 20) + 1
+      this.page = (this.data.results.length / 20)
     },
 
     setOffset(offset: number) {
@@ -59,11 +64,6 @@ export const usePokemonStore = defineStore('pokemonStore', {
     },
     setError(error: any) {
       this.error = error
-    },
-  },
-  getters: {
-    getPokemonByName: (state: InitialState) => {
-      return (name: string) => state.data.results.find((pokemon: Pokemon) => pokemon.name === name)
     },
   },
 })

@@ -1,63 +1,82 @@
 <script setup lang="ts">
-import type { UseApiDataOptions } from '#build/module/nuxt-api-party'
+import type { display } from 'virtual:nuxt-pwa-configuration'
 
-interface Pokemon {
-  id: number
-  name: string
-  image: string
-  uri: string
-}
-const store = usePokemonStore()
-
-usePokemonData('pokemon', {
-  onRequest: () => {
-    store.loading = true
-  },
-  onResponse: async ({ response }: any) => {
-    await store.setPokemons(response._data)
-    store.loading = false
-  },
-  onRequestError: ({ error }: any) => {
-    store.setError(error)
-    store.loading = false
-
-    console.error(error)
-  },
-  onResponseError: ({ error }: any) => {
-    store.error = error.message
-    store.loading = false
-  },
-  query: computed(() => ({
-    offset: store.offset,
-  })),
-} as UseApiDataOptions<any>)
+const pokemonStore = usePokemonStore()
+const mainStore = useMainStore()
+useFetchPokemons()
 
 function fetchMorePokemons() {
-  store.setOffset(store.offset + 20)
+  pokemonStore.setOffset(pokemonStore.offset + 20)
 }
 </script>
 
 <template>
-  <div>
-    <div>
-      <h1>Pokemons</h1>
-    </div>
-    <div v-if="store.loading">
-      Loading...
-    </div>
-    <div v-else>
-      <div class="grid grid-cols-4 gap-4 px-4">
-        <div v-for="{ id, name, image } in store.data.results" :key="name">
-          <nuxt-link :to="`pokemon/${name}`">
-            <p>{{ name }} {{ id }}</p>
-            <img :src="image" alt="{{ name }}">
-          </nuxt-link>
+  <div class="mx-4">
+    <div class="flex my-4 align-middle items-center justify-between">
+      <div>
+        <h1>Pokemons</h1>
+      </div>
+
+      <div class="flex space-x-4 align-middle items-center">
+        <div>
+          Display:
         </div>
+        <UButton icon="i-heroicons-squares-2x2" :disabled="mainStore.isGrid" @click="mainStore.setLayout(!mainStore.isGrid)">
+          Grid
+        </UButton>
+        <UButton icon="i-heroicons-list-bullet" :disabled="!mainStore.isGrid" @click="mainStore.setLayout(!mainStore.isGrid)">
+          List
+        </UButton>
       </div>
     </div>
 
-    <button @click="fetchMorePokemons">
-      Load More
-    </button>
+    <div :class="`grid grid-cols-${mainStore.isGrid ? 4 : 1} gap-4`">
+      <template v-for="({ name, image, uri }, index) in pokemonStore.data.results" :key="name">
+        <UCard>
+          <div>
+            <div>
+              <UAvatar
+                v-if="!mainStore.isGrid"
+                size="3xl"
+                :src="image"
+                :alt="name"
+              />
+              <NuxtImg v-else :modifiers="{ roundCorner: '0:100' }" :src="image" alt="{{ name }}" width="100" height="100" :placeholder="[50, 25]" />
+            </div>
+            <div class="capitalize text-md font-medium">
+              {{ name }}
+            </div>
+            <div>
+              <UButton :to="uri">
+                View
+              </UButton>
+            </div>
+          </div>
+        </UCard>
+
+        <div
+          v-if="(index + 1) % 20 === 0 || index + 1 === pokemonStore.data.results.length"
+          class="col-span-full justify-self-end"
+        >
+          Page {{ (index + 1) / 20 }} of {{ pokemonStore.data.pages }}
+        </div>
+      </template>
+    </div>
+
+    <UCard v-if="pokemonStore.loading" class="my-4">
+      <div class="flex items-center space-x-4">
+        <USkeleton class="h-12 w-12" :ui="{ rounded: 'rounded-full' }" />
+        <div class="space-y-2">
+          <USkeleton class="h-4 w-[250px]" />
+          <USkeleton class="h-4 w-[200px]" />
+        </div>
+      </div>
+    </UCard>
+
+    <div class="flex justify-center my-4">
+      <UButton @click="fetchMorePokemons">
+        Load more
+      </UButton>
+    </div>
   </div>
 </template>

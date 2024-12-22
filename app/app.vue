@@ -27,4 +27,8 @@ html,
 body {
   min-height: 100dvh;
 }
+
+h1 {
+  font-size: 2rem;
+}
 </style>

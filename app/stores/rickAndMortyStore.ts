@@ -1,3 +1,5 @@
+import { dtoFields } from '~/constants'
+
 export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
   state: () => ({
     data: {
@@ -12,8 +14,8 @@ export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
     error: null,
   }),
   actions: {
-    async setRickAndMortyData(data: any) {
-      const dto = responseDto(data, ['results', 'next', 'prev', 'previous', 'count', 'pages'])
+    async setData(data: any) {
+      const dto = responseDto(data, dtoFields)
 
       const characters = dto.results.map((character: any) => {
         return {
@@ -21,7 +23,7 @@ export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
           name: character.name,
           image: character.image,
           slug: character.name.replace(/\s/g, '-').toLowerCase(),
-          uri: `rickandmorty/${character.name.replace(/\s/g, '-').toLowerCase()}`,
+          uri: `rickandmorty/${character.id}`,
         }
       })
 
@@ -32,11 +34,6 @@ export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
     },
     setPage(page: number) {
       this.page = page
-    },
-  },
-  getters: {
-    getCharacterByName: (state: any) => {
-      return (name: string) => state.data.results.find((character: any) => character.slug === name)
     },
   },
 })
