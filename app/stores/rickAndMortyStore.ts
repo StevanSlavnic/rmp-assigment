@@ -2,6 +2,7 @@ import { dtoFields } from '~/constants'
 
 export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
   state: () => ({
+    isGrid: true,
     data: {
       results: [],
       next: null,
@@ -31,9 +32,17 @@ export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
         ...data.value,
         results: [...this.data.results, ...characters],
       }
+
+      this.data.pages = data.pages
     },
     setPage(page: number) {
       this.page = page
+    },
+    setError(error: any) {
+      this.error = error
+    },
+    setLayout(layout: boolean) {
+      this.isGrid = layout
     },
   },
 })

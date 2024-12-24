@@ -3,6 +3,7 @@ const route = useRoute()
 const router = useRouter()
 
 const { data: pokemon } = usePokemonData(`pokemon/${route.params.slug}`)
+
 function goToPrev() {
   router.go(-1)
 }

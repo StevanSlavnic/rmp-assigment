@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const route = useRoute()
-console.log('route :', route)
 
 const { data: character } = useRickAndMortyData<any>(`character/${route.params.id}`)
 </script>

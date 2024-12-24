@@ -7,7 +7,7 @@ export interface Route {
 
 export interface Pokemon {
   name: string
-  uri: string
+  url: string
   id: number
   sprites?: {
     front_default: string

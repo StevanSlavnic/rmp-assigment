@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { Route } from '@/types/index'
+import { _gray } from '#tailwind-config/theme/typography'
 import { menuRoutes } from '~/config/menuRoutes'
-import { useMainStore } from '~/stores/mainStore'
 
 const router = useRouter()
-const store = useMainStore()
 
 const definedRoutes = menuRoutes.filter((route: Route) => {
   return router.getRoutes().find((r: {
@@ -25,7 +24,7 @@ const definedRoutes = menuRoutes.filter((route: Route) => {
       <nav>
         <ul class="flex gap-2">
           <li v-for="route in definedRoutes" :key="route.path">
-            <ApplicationHeaderLink :to="route.path" :label="route.label" />
+            <BaseLink :to="route.path" :label="route.label" color="gray" />
           </li>
         </ul>
       </nav>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { dtoFields } from '~/constants'
+import { pokemonDomain } from '~/constants'
 import type { Pokemon } from '~/types'
 
 interface Response {
@@ -12,6 +12,7 @@ interface Response {
 
 interface InitialState {
   data: Response
+  isGrid: boolean
   page: number
   offset: number
   loading: boolean
@@ -27,6 +28,7 @@ export const usePokemonStore = defineStore('pokemonStore', {
       pages: 0,
       count: 0,
     },
+    isGrid: true,
     page: 0,
     offset: 0,
     loading: false,
@@ -35,8 +37,7 @@ export const usePokemonStore = defineStore('pokemonStore', {
 
   actions: {
     async setData(data: any) {
-      const dto = responseDto(data, dtoFields)
-      const pokemonData = await Promise.all(dto?.results?.map(async (pokemonItem: Pokemon) => {
+      const pokemonData = await Promise.all(data?.results?.map(async (pokemonItem: Pokemon) => {
         this.loading = true
         const pokemon: Pokemon = await $fetch(pokemonItem.url)
 
@@ -44,7 +45,7 @@ export const usePokemonStore = defineStore('pokemonStore', {
           id: pokemon.id,
           name: pokemon.name,
           image: pokemon.sprites?.front_default,
-          uri: `/pokemon/${pokemon.name}`,
+          uri: `/${pokemonDomain}/${pokemon.name}`,
         }
       })).finally(() => {
         this.loading = false
@@ -64,6 +65,9 @@ export const usePokemonStore = defineStore('pokemonStore', {
     },
     setError(error: any) {
       this.error = error
+    },
+    setLayout(isGrid: boolean) {
+      this.isGrid = isGrid
     },
   },
 })

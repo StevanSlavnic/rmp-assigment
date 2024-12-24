@@ -1,59 +1,24 @@
 <script setup lang="ts">
-import type { UseApiDataOptions } from '#build/module/nuxt-api-party'
+import useDynamicData from '~/composables/useDynamicData'
 
-const store = useRickAndMortyStore()
+const rickAndMortyStore = useRickAndMortyStore()
+useDynamicData('character', rickAndMortyStore)
 
-useRickAndMortyData('character', {
-  onRequest: () => {
-    store.loading = true
-  },
-  onResponse: async ({ response }: any) => {
-    await store.setData(response._data)
-    store.loading = false
-  },
-  onRequestError: ({ error }: any) => {
-    store.error = error.message
-    store.loading = false
-  },
-  onResponseError: ({ error }: any) => {
-    store.error = error.message
-    store.loading = false
-  },
-  query: computed(() => ({
-    page: store.page,
-  })),
-} as UseApiDataOptions<any>)
-
-function fetchMore() {
-  store.setPage(store.page + 1)
+function fetchMoreCharacters() {
+  rickAndMortyStore.setPage(rickAndMortyStore.page + 1)
 }
 </script>
 
 <template>
-  <div>
-    <div>
-      <h1>Rick and Morty</h1>
+  <div class="mx-4">
+    <div class="flex my-4 align-middle items-center justify-between">
+      <BaseHeadline text="Rick and Morty" tag="h1" />
+      <ModulesLayoutSwitcher
+        :is-grid="rickAndMortyStore.isGrid"
+        :set-layout="rickAndMortyStore.setLayout"
+      />
     </div>
 
-    <div>
-      <div class="grid grid-cols-4 gap-4 px-4">
-        <div v-for="{ id, name, image, uri } in store.data.results" :key="name" v-bind="{ id, name, image }">
-          <nuxt-link :to="uri">
-            <p title="name">
-              {{ name }} {{ id }}
-            </p>
-
-            <img :src="image" alt="{{ name }}">
-          </nuxt-link>
-        </div>
-      </div>
-
-      <div v-if="store.loading">
-        Loading...
-      </div>
-      <button @click="fetchMore">
-        Load More
-      </button>
-    </div>
+    <ModulesItemList :data="rickAndMortyStore" :fetch-more="fetchMoreCharacters" />
   </div>
 </template>
