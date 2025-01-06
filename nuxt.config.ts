@@ -1,5 +1,5 @@
 import { pwa } from './app/config/pwa'
-import { appDescription } from './app/constants'
+import { appDescription, rickAndMortyDomain } from './app/constants'
 
 export default defineNuxtConfig({
   modules: [

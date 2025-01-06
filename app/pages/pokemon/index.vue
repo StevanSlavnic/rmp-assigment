@@ -10,14 +10,16 @@ function fetchMorePokemons() {
 </script>
 
 <template>
-  <div class="mx-4">
-    <div class="flex my-4 align-middle items-center justify-between">
-      <BaseHeadline text="Pokemons" tag="h1" />
-      <ModulesLayoutSwitcher
-        :is-grid="pokemonStore.isGrid"
-        :set-layout="pokemonStore.setLayout"
-      />
-    </div>
+  <div>
+    <UContainer>
+      <div class="flex my-4 align-middle items-center justify-between">
+        <BaseHeadline text="Pokemons" tag="h1" />
+        <ModulesLayoutSwitcher
+          :is-grid="pokemonStore.isGrid"
+          :set-layout="pokemonStore.setLayout"
+        />
+      </div>
+    </UContainer>
 
     <ModulesItemList :data="pokemonStore" :fetch-more="fetchMorePokemons" />
   </div>

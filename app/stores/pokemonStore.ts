@@ -21,6 +21,7 @@ interface InitialState {
 
 export const usePokemonStore = defineStore('pokemonStore', {
   state: (): InitialState => ({
+    isGrid: true,
     data: {
       results: [],
       next: null,
@@ -28,7 +29,6 @@ export const usePokemonStore = defineStore('pokemonStore', {
       pages: 0,
       count: 0,
     },
-    isGrid: true,
     page: 0,
     offset: 0,
     loading: false,
@@ -45,7 +45,7 @@ export const usePokemonStore = defineStore('pokemonStore', {
           id: pokemon.id,
           name: pokemon.name,
           image: pokemon.sprites?.front_default,
-          uri: `/${pokemonDomain}/${pokemon.name}`,
+          uri: `/${pokemonDomain}/${pokemon.id}/${pokemon.name}`,
         }
       })).finally(() => {
         this.loading = false
@@ -57,7 +57,7 @@ export const usePokemonStore = defineStore('pokemonStore', {
         results: [...this.data.results, ...pokemonData],
       }
 
-      this.page = (this.data.results.length / 20)
+      this.page = (data.results.length / 20)
     },
 
     setOffset(offset: number) {

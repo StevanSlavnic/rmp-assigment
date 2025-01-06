@@ -6,13 +6,47 @@ export interface Route {
 }
 
 export interface Pokemon {
+  id: number
   name: string
   url: string
-  id: number
-  sprites?: {
+  sprites: {
     front_default: string
   }
-  image: string
+  base_experience: number
   height: number
   weight: number
+  abilities: {
+    ability: {
+      name: string
+    }
+  }[]
+  moves: {
+    move: {
+      name: string
+    }
+  }[]
+}
+
+export interface Character {
+  id: number
+  name: string
+  image: string
+  uri: string
+}
+
+export interface Response {
+  results: Character[] | Pokemon[]
+  next: null | string
+  previous: null | string
+  pages: number
+  count: number
+}
+
+export interface InitialState {
+  data: Response
+  isGrid: boolean
+  page: number
+  offset?: number
+  loading: boolean
+  error: any | null
 }

@@ -4,6 +4,7 @@ export const appKeywords = 'Nuxt.js, Vite, Ricky and Morty, Pokemons, API'
 
 export const pokemonDomain = 'pokemon'
 export const characterDomain = 'character'
+export const rickAndMortyDomain = 'rickandmorty'
 
 export const pokemonOffset = 20
 export const dtoFields = ['results', 'next', 'prev', 'previous', 'count', 'pages']

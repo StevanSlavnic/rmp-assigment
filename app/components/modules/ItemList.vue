@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
-const { data, fetchMore } = defineProps({
+defineProps({
   data: {
     type: Object,
     required: true,
   },
+  error: {
+    type: Object,
+    required: false,
+  },
   fetchMore: {
-    type: Function,
+    type: Function as PropType<(...args: any[]) => void>,
     required: true,
   },
 })
 </script>
 
 <template>
-  <div>
-    <div :class="`grid grid-cols-${data.isGrid ? 4 : 1} gap-4`">
+  <UContainer>
+    <div :class="`grid ${data.isGrid ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4' : ' grid-cols-1'} gap-4`">
       <template v-for="({ name, image, uri }, index) in data.data.results" :key="name">
         <PagesCard
           :item="{ name, image, uri }"
           :is-grid="data.isGrid"
         />
-        <ApplicationPaginationDivider
+        <UIPaginationDivider
           :index="index"
           :data-length="data.data.results.length"
           :total-pages="data.data.pages"
@@ -35,10 +37,10 @@ const { data, fetchMore } = defineProps({
       :is-grid="data.isGrid"
     />
 
-    <div class="flex justify-center my-4">
+    <div v-if="!data.loading" class="flex justify-center my-4">
       <UButton @click="fetchMore">
         Load more
       </UButton>
     </div>
-  </div>
+  </UContainer>
 </template>

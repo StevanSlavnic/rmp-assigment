@@ -1,7 +1,8 @@
-import { dtoFields } from '~/constants'
+import { dtoFields, rickAndMortyDomain } from '~/constants/index.js'
+import type { Character, InitialState } from '~/types/index.js'
 
 export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
-  state: () => ({
+  state: (): InitialState => ({
     isGrid: true,
     data: {
       results: [],
@@ -16,24 +17,20 @@ export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
   }),
   actions: {
     async setData(data: any) {
-      const dto = responseDto(data, dtoFields)
-
-      const characters = dto.results.map((character: any) => {
+      const characters = data.results.map((character: Character) => {
         return {
           id: character.id,
           name: character.name,
           image: character.image,
-          slug: character.name.replace(/\s/g, '-').toLowerCase(),
-          uri: `rickandmorty/${character.id}`,
+          uri: `${rickAndMortyDomain}/${character.id}/${character.name.replace(/\s/g, '-').toLowerCase()}`,
         }
       })
 
       this.data = {
         ...data.value,
+        pages: data.pages,
         results: [...this.data.results, ...characters],
       }
-
-      this.data.pages = data.pages
     },
     setPage(page: number) {
       this.page = page

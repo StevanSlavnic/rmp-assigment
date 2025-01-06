@@ -4,8 +4,9 @@ const props = defineProps<{
   label: string
   color?: string
 }>()
+const { to, label, color } = props
 </script>
 
 <template>
-  <UButton :to="props.to" :label="props.label" variant="ghost" :color="props.color" />
+  <UButton :to="to" :label="label" variant="ghost" :color="color" />
 </template>
