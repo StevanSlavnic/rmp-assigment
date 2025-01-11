@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import useDynamicData from '~/composables/useDynamicData'
+import { pokemonDomain } from '~/constants'
 
 const pokemonStore = usePokemonStore()
 const layoutStore = useLayoutStore()
-useDynamicData('pokemon', pokemonStore)
+useDynamicData(pokemonDomain, pokemonStore)
 
 function fetchMorePokemons() {
   pokemonStore.setOffset(pokemonStore.offset + 20)
@@ -21,6 +22,10 @@ function fetchMorePokemons() {
         />
       </div>
     </UContainer>
+
+    <div v-if="pokemonStore.error" class="text-red-500 text-center">
+      {{ pokemonStore.error }}
+    </div>
 
     <ItemList :data="pokemonStore" :fetch-more="fetchMorePokemons" />
   </div>

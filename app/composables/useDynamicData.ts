@@ -1,7 +1,7 @@
 import type { UseApiDataOptions } from 'nuxt-api-party'
 import { characterDomain, dtoFields, pokemonDomain } from '~/constants'
 
-export default function useDynamicData(dataType: string, store?: any) {
+export default async function useDynamicData(dataType: string, store?: any) {
   const pokemon = dataType === pokemonDomain
   const rickAndMorty = dataType === characterDomain
 
@@ -10,24 +10,22 @@ export default function useDynamicData(dataType: string, store?: any) {
       store.loading = true
     },
     onResponse: async ({ response }: { response: any }) => {
-      try {
-        const dto = responseDto(response._data, dtoFields)
-        await store.setData(dto)
-        store.loading = false
-      }
-      catch (error) {
+      if (!response.ok) {
         store.error = 'Failed to process response data.'
         store.loading = false
-        console.error(error)
+        console.error(response)
       }
+      const dto = responseDto(response._data, dtoFields)
+      await store.setData(dto)
+      store.loading = false
     },
     onRequestError: ({ error }: { error: any }) => {
-      store.error = error.message
+      store.error = error
       store.loading = false
       console.error(error)
     },
     onResponseError: ({ error }: { error: any }) => {
-      store.error = error?.message
+      store.error = error
       store.loading = false
       console.error(error)
     },

@@ -23,6 +23,10 @@ function fetchMoreCharacters() {
       </div>
     </UContainer>
 
+    <div v-if="rickAndMortyStore.error" class="text-red-500 text-center">
+      {{ rickAndMortyStore.error }}
+    </div>
+
     <ItemList :data="rickAndMortyStore" :fetch-more="fetchMoreCharacters" />
   </div>
 </template>
