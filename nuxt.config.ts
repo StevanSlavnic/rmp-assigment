@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     'nuxt-api-party',
     '@nuxt/content',
     '@nuxt/image',
+    '@nuxt/test-utils/module',
   ],
 
   experimental: {

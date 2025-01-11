@@ -1,11 +1,11 @@
-import type UseApiDataOptions from 'nuxt-api-party'
+import type { UseApiDataOptions } from 'nuxt-api-party'
 import { characterDomain, dtoFields, pokemonDomain } from '~/constants'
 
 export default function useDynamicData(dataType: string, store?: any) {
   const pokemon = dataType === pokemonDomain
   const rickAndMorty = dataType === characterDomain
 
-  const options = {
+  const options: UseApiDataOptions = {
     onRequest: () => {
       store.loading = true
     },
@@ -40,7 +40,7 @@ export default function useDynamicData(dataType: string, store?: any) {
         return { page: store.page }
       }
     }),
-  } as UseApiDataOptions<typeof store>
+  }
 
   if (pokemon) {
     return usePokemonData(dataType, options)

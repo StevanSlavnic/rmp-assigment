@@ -3,7 +3,6 @@ import type { Character, InitialState } from '~/types/index.js'
 
 export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
   state: (): InitialState => ({
-    isGrid: true,
     data: {
       results: [],
       next: null,
@@ -37,9 +36,6 @@ export const useRickAndMortyStore = defineStore('rickAndMortyStore', {
     },
     setError(error: any) {
       this.error = error
-    },
-    setLayout(layout: boolean) {
-      this.isGrid = layout
     },
   },
 })

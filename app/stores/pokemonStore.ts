@@ -12,7 +12,6 @@ interface Response {
 
 interface InitialState {
   data: Response
-  isGrid: boolean
   page: number
   offset: number
   loading: boolean
@@ -21,7 +20,6 @@ interface InitialState {
 
 export const usePokemonStore = defineStore('pokemonStore', {
   state: (): InitialState => ({
-    isGrid: true,
     data: {
       results: [],
       next: null,
@@ -65,9 +63,6 @@ export const usePokemonStore = defineStore('pokemonStore', {
     },
     setError(error: any) {
       this.error = error
-    },
-    setLayout(isGrid: boolean) {
-      this.isGrid = isGrid
     },
   },
 })

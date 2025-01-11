@@ -3,6 +3,7 @@ import useDynamicData from '~/composables/useDynamicData'
 import { characterDomain } from '~/constants'
 
 const rickAndMortyStore = useRickAndMortyStore()
+const layoutStore = useLayoutStore()
 useDynamicData(characterDomain, rickAndMortyStore)
 
 function fetchMoreCharacters() {
@@ -15,13 +16,13 @@ function fetchMoreCharacters() {
     <UContainer>
       <div class="flex my-4 align-middle items-center justify-between">
         <BaseHeadline text="Rick and Morty" tag="h1" />
-        <ModulesLayoutSwitcher
-          :is-grid="rickAndMortyStore.isGrid"
-          :set-layout="rickAndMortyStore.setLayout"
+        <LayoutSwitcher
+          :is-grid="layoutStore.isGrid"
+          :set-layout="layoutStore.setLayout"
         />
       </div>
     </UContainer>
 
-    <ModulesItemList :data="rickAndMortyStore" :fetch-more="fetchMoreCharacters" />
+    <ItemList :data="rickAndMortyStore" :fetch-more="fetchMoreCharacters" />
   </div>
 </template>

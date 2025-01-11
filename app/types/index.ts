@@ -44,7 +44,6 @@ export interface Response {
 
 export interface InitialState {
   data: Response
-  isGrid: boolean
   page: number
   offset?: number
   loading: boolean
