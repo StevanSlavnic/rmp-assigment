@@ -16,7 +16,7 @@ function fetchMoreCharacters() {
     <UContainer>
       <div class="flex my-4 align-middle items-center justify-between">
         <BaseHeadline text="Rick and Morty" tag="h1" />
-        <LayoutSwitcher
+        <MainLayoutSwitcher
           :is-grid="layoutStore.isGrid"
           :set-layout="layoutStore.setLayout"
         />
@@ -27,6 +27,6 @@ function fetchMoreCharacters() {
       {{ rickAndMortyStore.error }}
     </div>
 
-    <ItemList :data="rickAndMortyStore" :fetch-more="fetchMoreCharacters" />
+    <MainItemList :data="rickAndMortyStore" :fetch-more="fetchMoreCharacters" />
   </div>
 </template>

@@ -16,7 +16,7 @@ function fetchMorePokemons() {
     <UContainer>
       <div class="flex my-4 align-middle items-center justify-between">
         <BaseHeadline text="Pokemons" tag="h1" />
-        <LayoutSwitcher
+        <MainLayoutSwitcher
           :is-grid="layoutStore.isGrid"
           :set-layout="layoutStore.setLayout"
         />
@@ -27,6 +27,6 @@ function fetchMorePokemons() {
       {{ pokemonStore.error }}
     </div>
 
-    <ItemList :data="pokemonStore" :fetch-more="fetchMorePokemons" />
+    <MainItemList :data="pokemonStore" :fetch-more="fetchMorePokemons" />
   </div>
 </template>

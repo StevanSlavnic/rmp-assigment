@@ -15,43 +15,43 @@ const layoutStore = useLayoutStore()
 
 <template>
   <UContainer>
-    <GridLayout v-if="layoutStore.isGrid">
+    <MainGridLayout v-if="layoutStore.isGrid">
       <template v-for="({ name, image, uri }, index) in data?.data?.results" :key="name">
-        <Card
+        <BaseCard
           :item="{ name, image, uri }"
         />
-        <PaginationDivider
+        <BasePaginationDivider
           :index="index"
           :data-length="data?.data?.results.length"
           :total-pages="data?.data?.pages"
         />
       </template>
-    </GridLayout>
+    </MainGridLayout>
 
-    <ListLayout v-if="!layoutStore.isGrid">
+    <MainListLayout v-if="!layoutStore.isGrid">
       <template v-for="({ name, image, uri }, index) in data?.data?.results" :key="name">
-        <InlineCard
+        <BaseInlineCard
           :item="{ name, image, uri }"
         />
-        <PaginationDivider
+        <BasePaginationDivider
           :index="index"
           :data-length="data?.data?.results.length"
           :total-pages="data?.data?.pages"
         />
       </template>
-    </ListLayout>
+    </MainListLayout>
 
-    <GridLayout v-if="data?.loading && layoutStore.isGrid">
+    <MainGridLayout v-if="data?.loading && layoutStore.isGrid">
       <BaseSkeletonCard
         :number-ofskeletons="4"
       />
-    </GridLayout>
+    </MainGridLayout>
 
-    <ListLayout v-if="data?.loading && !layoutStore.isGrid">
+    <MainListLayout v-if="data?.loading && !layoutStore.isGrid">
       <BaseSkeletonCard
         :number-ofskeletons="4"
       />
-    </ListLayout>
+    </MainListLayout>
 
     <ClientOnly>
       <div class="flex justify-center my-4">
